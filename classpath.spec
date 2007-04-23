@@ -1,12 +1,13 @@
 %bcond_without  qt
 %bcond_with     gjdoc
+%bcond_without  info
 
-%define javaver 1.4.2
+%define javaver 1.5.0
 %define libname %mklibname %{name}
 
 Name:           classpath
-Version:        0.93
-Release:        %mkrel 3
+Version:        0.95
+Release:        %mkrel 1
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
 Group:          Development/Java
@@ -14,12 +15,11 @@ Group:          Development/Java
 #Distribution:  JPackage
 License:        GPL-like
 URL:            http://www.classpath.org/
-Source0:        ftp://ftp.gnu.org/pub/gnu/classpath/classpath-%{version}-generics.tar.bz2
+Source0:        ftp://ftp.gnu.org/pub/gnu/classpath/classpath-%{version}.tar.gz
+Source1:        ftp://ftp.gnu.org/pub/gnu/classpath/classpath-%{version}.tar.gz.sig
 Patch0:         classpath-with-jay.patch
 Patch1:         classpath-enable-examples.patch
-# from upstream, classpath #31017
-Patch2:         classpath-use-xpcom.patch
-%if 0
+%if %with info
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
 %endif
@@ -111,10 +111,9 @@ computer. This means they can do anything you can do, like deleting all
 your important data.
 
 %prep
-%setup -q -n classpath-%{version}-generics
+%setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p0
 %{__aclocal} -I m4
 %{__automake}
 %{__autoconf}
@@ -154,12 +153,8 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
 %{__rm} %{buildroot}%{_libdir}/%{name}/libgcjwebplugin.la
 # XXX: Shared with libgcj
-%{__rm} -f %{buildroot}%{_prefix}/lib/logging.properties
-%{__rm} -f %{buildroot}%{_prefix}/lib/security/classpath.security
-
-%{__mv} %{buildroot}%{_infodir}/hacking.info %{buildroot}%{_infodir}/%{name}-hacking.info
-%{__mv} %{buildroot}%{_infodir}/tools.info %{buildroot}%{_infodir}/%{name}-tools.info
-%{__mv} %{buildroot}%{_infodir}/vmintegration.info %{buildroot}%{_infodir}/%{name}-vmintegration.info
+%{__rm} %{buildroot}%{_prefix}/lib/logging.properties
+%{__rm} %{buildroot}%{_prefix}/lib/security/classpath.security
 
 %if %with gjdoc
 %{__mkdir_p} 755 %{buildroot}%{_javadocdir}
@@ -170,16 +165,16 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %clean
 %{__rm} -rf %{buildroot}
 
-%if 0
+%if %with info
 %post
-%_install_info %{name}-hacking.info
-%_install_info %{name}-tools.info
-%_install_info %{name}-vmintegration.info
+%_install_info cp-hacking.info
+%_install_info cp-tools.info
+%_install_info cp-vmintegration.info
 
 %preun
-%_remove_install_info %{name}-hacking.info
-%_remove_install_info %{name}-tools.info
-%_remove_install_info %{name}-vmintegration.info
+%_remove_install_info cp-hacking.info
+%_remove_install_info cp-tools.info
+%_remove_install_info cp-vmintegration.info
 %endif
 
 %if %with gjdoc
@@ -197,17 +192,20 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %attr(0755,root,root) %{_bindir}/gappletviewer
 %attr(0755,root,root) %{_bindir}/gjar
 %attr(0755,root,root) %{_bindir}/gjarsigner
+%attr(0755,root,root) %{_bindir}/gjavah
 %attr(0755,root,root) %{_bindir}/gkeytool
 %attr(0755,root,root) %{_bindir}/gnative2ascii
 %attr(0755,root,root) %{_bindir}/gorbd
+# FIXME: conflicts with gcj-tools
+%exclude %attr(0755,root,root) %{_bindir}/grmic
 %attr(0755,root,root) %{_bindir}/grmid
 %exclude %attr(0755,root,root) %{_bindir}/grmiregistry
 %attr(0755,root,root) %{_bindir}/gserialver
 %attr(0755,root,root) %{_bindir}/gtnameserv
 %{_datadir}/%{name}
-%{_infodir}/%{name}-hacking.info*
-%{_infodir}/%{name}-tools.info*
-%{_infodir}/%{name}-vmintegration.info*
+%{_infodir}/cp-hacking.info*
+%{_infodir}/cp-tools.info*
+%{_infodir}/cp-vmintegration.info*
 %dir %{_libdir}/%{name}
 %defattr(-,root,root)
 %{_libdir}/%{name}/libgconfpeer.*
@@ -216,12 +214,25 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %{_libdir}/%{name}/libgtkpeer.*
 %{_libdir}/%{name}/libjavaio.*
 %{_libdir}/%{name}/libjavalang.*
+%{_libdir}/%{name}/libjavalangmanagement.*
 %{_libdir}/%{name}/libjavalangreflect.*
 %{_libdir}/%{name}/libjavanet.*
 %{_libdir}/%{name}/libjavanio.*
 %{_libdir}/%{name}/libjavautil.*
 %{_libdir}/%{name}/libjawt.*
 #%{_libdir}/%{name}/libxmlj.*
+%{_mandir}/man1/gappletviewer.1*
+%{_mandir}/man1/gcjh.1*
+%{_mandir}/man1/gjar.1*
+%{_mandir}/man1/gjarsigner.1*
+%{_mandir}/man1/gjavah.1*
+%{_mandir}/man1/gkeytool.1*
+%{_mandir}/man1/gnative2ascii.1*
+%{_mandir}/man1/gorbd.1*
+%{_mandir}/man1/grmid.1*
+%{_mandir}/man1/grmiregistry.1*
+%{_mandir}/man1/gserialver.1*
+%{_mandir}/man1/gtnameserv.1*
 
 %files devel
 %defattr(0644,root,root,0755)
