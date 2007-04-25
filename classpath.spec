@@ -7,7 +7,7 @@
 
 Name:           classpath
 Version:        0.95
-Release:        %mkrel 1
+Release:        %mkrel 2
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
 Group:          Development/Java
@@ -222,7 +222,7 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %{_libdir}/%{name}/libjawt.*
 #%{_libdir}/%{name}/libxmlj.*
 %{_mandir}/man1/gappletviewer.1*
-%{_mandir}/man1/gcjh.1*
+%exclude %{_mandir}/man1/gcjh.1*
 %{_mandir}/man1/gjar.1*
 %{_mandir}/man1/gjarsigner.1*
 %{_mandir}/man1/gjavah.1*
@@ -230,7 +230,7 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %{_mandir}/man1/gnative2ascii.1*
 %{_mandir}/man1/gorbd.1*
 %{_mandir}/man1/grmid.1*
-%{_mandir}/man1/grmiregistry.1*
+%exclude %{_mandir}/man1/grmiregistry.1*
 %{_mandir}/man1/gserialver.1*
 %{_mandir}/man1/gtnameserv.1*
 
