@@ -20,8 +20,8 @@ Source1:        ftp://ftp.gnu.org/pub/gnu/classpath/classpath-%{version}.tar.gz.
 Patch0:         classpath-with-jay.patch
 Patch1:         classpath-enable-examples.patch
 %if %with info
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
+Requires(post): info-install
+Requires(preun): info-install
 %endif
 Requires:       jamvm
 BuildRequires:  atk-devel
