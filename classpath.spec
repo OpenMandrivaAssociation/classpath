@@ -6,8 +6,8 @@
 %define libname %mklibname %{name}
 
 Name:           classpath
-Version:        0.95
-Release:        %mkrel 3
+Version:        0.96
+Release:        %mkrel 1
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
 Group:          Development/Java
@@ -15,8 +15,8 @@ Group:          Development/Java
 #Distribution:  JPackage
 License:        GPL-like
 URL:            http://www.classpath.org/
-Source0:        ftp://ftp.gnu.org/pub/gnu/classpath/classpath-%{version}.tar.gz
-Source1:        ftp://ftp.gnu.org/pub/gnu/classpath/classpath-%{version}.tar.gz.sig
+Source0:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz
+#Source1:        ftp://ftp.gnu.org/pub/gnu/classpath/classpath-%{version}.tar.gz.sig
 Patch0:         classpath-with-jay.patch
 Patch1:         classpath-enable-examples.patch
 %if %with info
@@ -260,6 +260,3 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %{_libdir}/mozilla/plugins
 %endif
 %{_libdir}/classpath/libgcjwebplugin.so
-
-
-
