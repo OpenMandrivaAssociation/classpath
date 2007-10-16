@@ -6,7 +6,7 @@
 %define libname %mklibname %{name}
 
 Name:           classpath
-Version:        0.96
+Version:        0.96.1
 Release:        %mkrel 1
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
@@ -16,7 +16,8 @@ Group:          Development/Java
 License:        GPL-like
 URL:            http://www.classpath.org/
 Source0:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz
-#Source1:        ftp://ftp.gnu.org/pub/gnu/classpath/classpath-%{version}.tar.gz.sig
+Source1:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz.directive.asc
+Source2:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz.sig
 Patch0:         classpath-with-jay.patch
 Patch1:         classpath-enable-examples.patch
 %if %with info
