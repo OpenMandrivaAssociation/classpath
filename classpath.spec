@@ -7,7 +7,7 @@
 
 Name:           classpath
 Version:        0.96.1
-Release:        %mkrel 1
+Release:        %mkrel 2
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
 Group:          Development/Java
@@ -40,7 +40,7 @@ BuildRequires:  gjdoc
 %else
 Obsoletes:      classpath-javadoc
 %endif
-BuildRequires:  jpackage-utils
+BuildRequires:  java-rpmbuild
 BuildRequires:  libalsa-devel
 BuildRequires:  libGConf2-devel
 BuildRequires:  libgdk_pixbuf2.0-devel
