@@ -56,6 +56,7 @@ BuildRequires:  pkgconfig
 %if %with qt
 BuildRequires:  qt4-devel >= 0:4.1.0
 %endif
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 GNU Classpath, Essential Libraries for Java, is a GNU project to
