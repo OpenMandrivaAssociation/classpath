@@ -6,8 +6,8 @@
 %define libname %mklibname %{name}
 
 Name:           classpath
-Version:        0.96.1
-Release:        %mkrel 2
+Version:        0.97.1
+Release:        %mkrel 1
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
 Group:          Development/Java
@@ -113,7 +113,7 @@ your important data.
 
 %prep
 %setup -q
-%patch0 -p1
+#%patch0 -p1
 %patch1 -p1
 %{__aclocal} -I m4
 %{__automake}
