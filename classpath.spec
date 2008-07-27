@@ -7,7 +7,7 @@
 
 Name:           classpath
 Version:        0.97.2
-Release:        %mkrel 1
+Release:        %mkrel 2
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
 Group:          Development/Java
@@ -45,6 +45,7 @@ BuildRequires:  libpango-devel
 #BuildRequires: libxml2-devel
 #BuildRequires: libxslt-devel
 BuildRequires:  libxtst-devel
+BuildRequires:  magic-devel
 BuildRequires:  mozilla-firefox-devel
 BuildRequires:  pkgconfig
 %if %with qt
