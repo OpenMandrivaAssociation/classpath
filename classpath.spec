@@ -6,20 +6,16 @@
 %define libname %mklibname %{name}
 
 Name:           classpath
-Version:        0.97.1
+Version:        0.97.2
 Release:        %mkrel 1
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
 Group:          Development/Java
-#Vendor:        JPackage Project
-#Distribution:  JPackage
 License:        GPL-like
 URL:            http://www.classpath.org/
 Source0:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz
 Source1:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz.directive.asc
 Source2:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz.sig
-Patch0:         classpath-with-jay.patch
-Patch1:         classpath-enable-examples.patch
 %if %with info
 Requires(post): info-install
 Requires(preun): info-install
@@ -113,13 +109,6 @@ your important data.
 
 %prep
 %setup -q
-#%patch0 -p1
-%patch1 -p1
-%{__aclocal} -I m4
-%{__automake}
-%{__autoconf}
-%ifarch x86_64
-%endif
 %{__perl} -pi -e 's|^tools_cp=.*|tools_cp="%{_datadir}/%{name}/glibj.zip:%{_datadir}/%{name}/tools.zip"|' tools/g*.in
 
 %build
@@ -153,7 +142,7 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
 %{__mv} %{buildroot}%{_libdir}/%{name}/libgcjwebplugin.so %{buildroot}%{_libdir}/mozilla/plugins
 %endif
 %{__rm} %{buildroot}%{_libdir}/%{name}/libgcjwebplugin.la
-# XXX: Shared with libgcj
+# FIXME: Shared with libgcj
 %{__rm} %{buildroot}%{_prefix}/lib/logging.properties
 %{__rm} %{buildroot}%{_prefix}/lib/security/classpath.security
 
@@ -189,21 +178,22 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %files
 %defattr(0644,root,root,0755)
 %doc AUTHORS BUGS COPYING HACKING INSTALL LICENSE NEWS README THANKYOU TODO
-%exclude %{_datadir}/%{name}/examples
-%attr(0755,root,root) %{_bindir}/gappletviewer
-%attr(0755,root,root) %{_bindir}/gjar
-%attr(0755,root,root) %{_bindir}/gjarsigner
-%attr(0755,root,root) %{_bindir}/gjavah
-%attr(0755,root,root) %{_bindir}/gkeytool
-%attr(0755,root,root) %{_bindir}/gnative2ascii
-%attr(0755,root,root) %{_bindir}/gorbd
 # FIXME: conflicts with gcj-tools
+%exclude %attr(0755,root,root) %{_bindir}/gappletviewer
+%exclude %attr(0755,root,root) %{_bindir}/gjar
+%exclude %attr(0755,root,root) %{_bindir}/gjarsigner
+%exclude %attr(0755,root,root) %{_bindir}/gjavah
+%exclude %attr(0755,root,root) %{_bindir}/gkeytool
+%exclude %attr(0755,root,root) %{_bindir}/gnative2ascii
+%exclude %attr(0755,root,root) %{_bindir}/gorbd
 %exclude %attr(0755,root,root) %{_bindir}/grmic
-%attr(0755,root,root) %{_bindir}/grmid
+%exclude %attr(0755,root,root) %{_bindir}/grmid
 %exclude %attr(0755,root,root) %{_bindir}/grmiregistry
-%attr(0755,root,root) %{_bindir}/gserialver
-%attr(0755,root,root) %{_bindir}/gtnameserv
+%exclude %attr(0755,root,root) %{_bindir}/gserialver
+%exclude %attr(0755,root,root) %{_bindir}/gtnameserv
+#
 %{_datadir}/%{name}
+%exclude %{_datadir}/%{name}/examples
 %{_infodir}/cp-hacking.info*
 %{_infodir}/cp-tools.info*
 %{_infodir}/cp-vmintegration.info*
@@ -222,18 +212,20 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %{_libdir}/%{name}/libjavautil.*
 %{_libdir}/%{name}/libjawt.*
 #%{_libdir}/%{name}/libxmlj.*
-%{_mandir}/man1/gappletviewer.1*
+# FIXME: conflicts with gcj-tools
+%exclude %{_mandir}/man1/gappletviewer.1*
 %exclude %{_mandir}/man1/gcjh.1*
-%{_mandir}/man1/gjar.1*
-%{_mandir}/man1/gjarsigner.1*
-%{_mandir}/man1/gjavah.1*
-%{_mandir}/man1/gkeytool.1*
-%{_mandir}/man1/gnative2ascii.1*
-%{_mandir}/man1/gorbd.1*
-%{_mandir}/man1/grmid.1*
+%exclude %{_mandir}/man1/gjar.1*
+%exclude %{_mandir}/man1/gjarsigner.1*
+%exclude %{_mandir}/man1/gjavah.1*
+%exclude %{_mandir}/man1/gkeytool.1*
+%exclude %{_mandir}/man1/gnative2ascii.1*
+%exclude %{_mandir}/man1/gorbd.1*
+%exclude %{_mandir}/man1/grmid.1*
 %exclude %{_mandir}/man1/grmiregistry.1*
-%{_mandir}/man1/gserialver.1*
-%{_mandir}/man1/gtnameserv.1*
+%exclude %{_mandir}/man1/gserialver.1*
+%exclude %{_mandir}/man1/gtnameserv.1*
+#
 
 %files devel
 %defattr(0644,root,root,0755)
