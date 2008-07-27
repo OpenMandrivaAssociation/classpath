@@ -14,8 +14,6 @@ Group:          Development/Java
 License:        GPL-like
 URL:            http://www.classpath.org/
 Source0:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz
-Source1:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz.directive.asc
-Source2:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz.sig
 %if %with info
 Requires(post): info-install
 Requires(preun): info-install
