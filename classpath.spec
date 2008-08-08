@@ -1,3 +1,4 @@
+%bcond_with     ecj
 %bcond_without  qt
 %bcond_with     gjdoc
 %bcond_without  info
@@ -18,13 +19,14 @@ Source0:        http://builder.classpath.org/dist/classpath-%{version}.tar.gz
 Requires(post): info-install
 Requires(preun): info-install
 %endif
-Requires:       jamvm
 BuildRequires:  atk-devel
 BuildRequires:  autoconf2.5
 BuildRequires:  automake1.8
 BuildRequires:  cairo-devel
 BuildRequires:  dssi-devel
+%if %with ecj
 BuildRequires:  eclipse-ecj
+%endif
 BuildRequires:  freetype2-devel
 BuildRequires:  gcc-java
 BuildRequires:  gcj-tools
@@ -123,8 +125,12 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
                --enable-regen-headers \
                --disable-rpath \
-               --with-vm=%{_bindir}/jamvm \
+               --with-vm=%{java} \
+%if %with ecj
                --with-ecj \
+%else
+               --without-ecj \
+%endif
 %if %with gjdoc
                --with-gjdoc
 %else
@@ -134,7 +140,7 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
 
 %install
 %{__rm} -rf %{buildroot}
-%makeinstall
+%{makeinstall_std}
 (cd native/plugin && %makeinstall)
 %if 0
 %{__mkdir_p} %{buildroot}%{_libdir}/mozilla/plugins
