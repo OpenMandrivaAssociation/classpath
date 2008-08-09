@@ -2,6 +2,7 @@
 %bcond_without  qt
 %bcond_with     gjdoc
 %bcond_without  info
+%bcond_with     plugin
 
 %define javaver 1.5.0
 %define libname %mklibname %{name}
@@ -48,7 +49,9 @@ BuildRequires:  libpango-devel
 #BuildRequires: libxslt-devel
 BuildRequires:  libxtst-devel
 BuildRequires:  magic-devel
+%if %with plugin
 BuildRequires:  mozilla-firefox-devel
+%endif
 BuildRequires:  pkgconfig
 %if %with qt
 BuildRequires:  qt4-devel >= 0:4.1.0
@@ -60,36 +63,37 @@ GNU Classpath, Essential Libraries for Java, is a GNU project to
 create free core class libraries for use with virtual machines and
 compilers for the java programming language.
 
-%package        devel
+%package devel
 Summary:        Devlopment headers and examples for GNU Classpath
 Group:          Development/Java
 Requires:       classpath = %{epoch}:%{version}-%{release}
 
-%description    devel
+%description devel
 %{summary}.
 
 %if %with gjdoc
-%package        javadoc
+%package javadoc
 Summary:        API documentation for GNU Classpath
 Group:          Development/Java
 Provides:       java-javadoc = 0:%{javaver}
 Provides:       java-%{javaver}-javadoc = 0:%{javaver}
 
-%description    javadoc
+%description javadoc
 %{summary}.
 %endif
 
 %if %with qt
-%package        qt
+%package qt
 Summary:        QT4 peer for GNU Classpath
 Group:          Development/Java
 
-%description    qt
+%description qt
 %{summary}.
 %endif
 
-%package -n     mozilla-plugin-gcjwebplugin
-Summary:        A plugin to execute Java (tm) applets in Mozilla and compatible browsers
+%if %with plugin
+%package -n mozilla-plugin-gcjwebplugin
+Summary:        Plugin to execute Java (tm) applets in Mozilla and compatible browsers
 Group:          Development/Java
 Requires:       mozilla-firefox
 Provides:       mozilla-plugin-gcj = %{epoch}:%{version}-%{release}
@@ -107,6 +111,7 @@ WARNING: The current version does not provide a security manager capable
 of handling Java (tm) applets. Applets have UNRESTRICTED access to your
 computer. This means they can do anything you can do, like deleting all
 your important data.
+%endif
 
 %prep
 %setup -q
@@ -117,7 +122,11 @@ your important data.
 export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
 %configure2_5x --disable-Werror \
+%if %with plugin
                --enable-plugin \
+%else
+               --disable-plugin \
+%endif
 %if %with qt
                --enable-qt-peer \
 %else
@@ -141,12 +150,14 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
 %install
 %{__rm} -rf %{buildroot}
 %{makeinstall_std}
-(cd native/plugin && %makeinstall)
+%if %with plugin
+(cd native/plugin && %{makeinstall_std})
+%{__rm} %{buildroot}%{_libdir}/%{name}/libgcjwebplugin.la
+%endif
 %if 0
 %{__mkdir_p} %{buildroot}%{_libdir}/mozilla/plugins
 %{__mv} %{buildroot}%{_libdir}/%{name}/libgcjwebplugin.so %{buildroot}%{_libdir}/mozilla/plugins
 %endif
-%{__rm} %{buildroot}%{_libdir}/%{name}/libgcjwebplugin.la
 # FIXME: Shared with libgcj
 %{__rm} %{buildroot}%{_prefix}/lib/logging.properties
 %{__rm} %{buildroot}%{_prefix}/lib/security/classpath.security
@@ -252,9 +263,11 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %{_libdir}/%{name}/libqtpeer.*
 %endif
 
+%if %with plugin
 %files -n mozilla-plugin-gcjwebplugin
 %defattr(-,root,root)
 %if 0
 %{_libdir}/mozilla/plugins
 %endif
 %{_libdir}/classpath/libgcjwebplugin.so
+%endif
