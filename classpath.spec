@@ -9,7 +9,7 @@
 
 Name:           classpath
 Version:        0.97.2
-Release:        %mkrel 4
+Release:        %mkrel 5
 Epoch:          0
 Summary:        GNU Classpath, Essential Libraries for Java
 Group:          Development/Java
