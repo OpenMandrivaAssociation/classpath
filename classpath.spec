@@ -168,6 +168,33 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
 touch %{buildroot}%{_javadocdir}/{%{name},java}
 %endif
 
+# FIXME: conflicts with gcj-tools
+rm -f %{_bindir}/gappletviewer
+rm -f %{_bindir}/gjar
+rm -f %{_bindir}/gjarsigner
+rm -f %{_bindir}/gjavah
+rm -f %{_bindir}/gkeytool
+rm -f %{_bindir}/gnative2ascii
+rm -f %{_bindir}/gorbd
+rm -f %{_bindir}/grmic
+rm -f %{_bindir}/grmid
+rm -f %%{_bindir}/grmiregistry
+rm -f %{_bindir}/gserialver
+rm -f %{_bindir}/gtnameserv
+rm -f %{_datadir}/%{name}/examples
+rm -f %{_mandir}/man1/gappletviewer.1*
+rm -f %{_mandir}/man1/gcjh.1*
+rm -f %{_mandir}/man1/gjar.1*
+rm -f %{_mandir}/man1/gjarsigner.1*
+rm -f %{_mandir}/man1/gjavah.1*
+rm -f %{_mandir}/man1/gkeytool.1*
+rm -f %{_mandir}/man1/gnative2ascii.1*
+rm -f %{_mandir}/man1/gorbd.1*
+rm -f %{_mandir}/man1/grmid.1*
+rm -f %{_mandir}/man1/grmiregistry.1*
+rm -f %{_mandir}/man1/gserialver.1*
+rm -f %{_mandir}/man1/gtnameserv.1*
+
 %clean
 %{__rm} -rf %{buildroot}
 
@@ -194,22 +221,7 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %files
 %defattr(0644,root,root,0755)
 %doc AUTHORS BUGS COPYING HACKING INSTALL LICENSE NEWS README THANKYOU TODO
-# FIXME: conflicts with gcj-tools
-%exclude %attr(0755,root,root) %{_bindir}/gappletviewer
-%exclude %attr(0755,root,root) %{_bindir}/gjar
-%exclude %attr(0755,root,root) %{_bindir}/gjarsigner
-%exclude %attr(0755,root,root) %{_bindir}/gjavah
-%exclude %attr(0755,root,root) %{_bindir}/gkeytool
-%exclude %attr(0755,root,root) %{_bindir}/gnative2ascii
-%exclude %attr(0755,root,root) %{_bindir}/gorbd
-%exclude %attr(0755,root,root) %{_bindir}/grmic
-%exclude %attr(0755,root,root) %{_bindir}/grmid
-%exclude %attr(0755,root,root) %{_bindir}/grmiregistry
-%exclude %attr(0755,root,root) %{_bindir}/gserialver
-%exclude %attr(0755,root,root) %{_bindir}/gtnameserv
-#
 %{_datadir}/%{name}
-%exclude %{_datadir}/%{name}/examples
 %{_infodir}/cp-hacking.info*
 %{_infodir}/cp-tools.info*
 %{_infodir}/cp-vmintegration.info*
@@ -228,20 +240,6 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %{_libdir}/%{name}/libjavautil.*
 %{_libdir}/%{name}/libjawt.*
 #%{_libdir}/%{name}/libxmlj.*
-# FIXME: conflicts with gcj-tools
-%exclude %{_mandir}/man1/gappletviewer.1*
-%exclude %{_mandir}/man1/gcjh.1*
-%exclude %{_mandir}/man1/gjar.1*
-%exclude %{_mandir}/man1/gjarsigner.1*
-%exclude %{_mandir}/man1/gjavah.1*
-%exclude %{_mandir}/man1/gkeytool.1*
-%exclude %{_mandir}/man1/gnative2ascii.1*
-%exclude %{_mandir}/man1/gorbd.1*
-%exclude %{_mandir}/man1/grmid.1*
-%exclude %{_mandir}/man1/grmiregistry.1*
-%exclude %{_mandir}/man1/gserialver.1*
-%exclude %{_mandir}/man1/gtnameserv.1*
-#
 
 %files devel
 %defattr(0644,root,root,0755)
