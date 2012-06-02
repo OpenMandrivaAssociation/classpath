@@ -57,7 +57,7 @@ compilers for the java programming language.
 %package devel
 Summary:	Devlopment headers and examples for GNU Classpath
 Group:		Development/Java
-Requires:	classpath = %{epoch}:%{version}-%{release}
+Requires:	classpath = %{EVRD}
 
 %description devel
 %{summary}.
@@ -87,11 +87,11 @@ Group:		Development/Java
 Summary:	Plugin to execute Java (tm) applets in Mozilla and compatible browsers
 Group:		Development/Java
 Requires:	mozilla-firefox
-Provides:	mozilla-plugin-gcj = %{epoch}:%{version}-%{release}
-Provides:	gcjwebplugin = %{epoch}:%{version}-%{release}
+Provides:	mozilla-plugin-gcj = %{EVRD}
+Provides:	gcjwebplugin = %{EVRD}
 Provides:	java-plugin = %{epoch}:%{javaver}
-Provides:	java-%{javaver}-plugin = %{epoch}:%{version}
-Requires:	classpath = %{epoch}:%{version}-%{release}
+Provides:	java-%{javaver}-plugin = %{EVRD}
+Requires:	classpath = %{EVRD}
 
 %description -n mozilla-plugin-gcjwebplugin
 gcjwebplugin is a plugin to execute Java (tm) applets in Mozilla and
@@ -161,31 +161,31 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %endif
 
 # FIXME: conflicts with gcj-tools
-%__rm -f %{_bindir}/gappletviewer
-%__rm -f %{_bindir}/gjar
-%__rm -f %{_bindir}/gjarsigner
-%__rm -f %{_bindir}/gjavah
-%__rm -f %{_bindir}/gkeytool
-%__rm -f %{_bindir}/gnative2ascii
-%__rm -f %{_bindir}/gorbd
-%__rm -f %{_bindir}/grmic
-%__rm -f %{_bindir}/grmid
-%__rm -f %%{_bindir}/grmiregistry
-%__rm -f %{_bindir}/gserialver
-%__rm -f %{_bindir}/gtnameserv
-%__rm -f %{_datadir}/%{name}/examples
-%__rm -f %{_mandir}/man1/gappletviewer.1*
-%__rm -f %{_mandir}/man1/gcjh.1*
-%__rm -f %{_mandir}/man1/gjar.1*
-%__rm -f %{_mandir}/man1/gjarsigner.1*
-%__rm -f %{_mandir}/man1/gjavah.1*
-%__rm -f %{_mandir}/man1/gkeytool.1*
-%__rm -f %{_mandir}/man1/gnative2ascii.1*
-%__rm -f %{_mandir}/man1/gorbd.1*
-%__rm -f %{_mandir}/man1/grmid.1*
-%__rm -f %{_mandir}/man1/grmiregistry.1*
-%__rm -f %{_mandir}/man1/gserialver.1*
-%__rm -f %{_mandir}/man1/gtnameserv.1*
+%__rm -f %{buildroot}%{_bindir}/gappletviewer
+%__rm -f %{buildroot}%{_bindir}/gjar
+%__rm -f %{buildroot}%{_bindir}/gjarsigner
+%__rm -f %{buildroot}%{_bindir}/gjavah
+%__rm -f %{buildroot}%{_bindir}/gkeytool
+%__rm -f %{buildroot}%{_bindir}/gnative2ascii
+%__rm -f %{buildroot}%{_bindir}/gorbd
+%__rm -f %{buildroot}%{_bindir}/grmic
+%__rm -f %{buildroot}%{_bindir}/grmid
+%__rm -f %{buildroot}%{_bindir}/grmiregistry
+%__rm -f %{buildroot}%{_bindir}/gserialver
+%__rm -f %{buildroot}%{_bindir}/gtnameserv
+%__rm -f %{buildroot}%{_datadir}/%{name}/examples
+%__rm -f %{buildroot}%{_mandir}/man1/gappletviewer.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gcjh.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gjar.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gjarsigner.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gjavah.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gkeytool.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gnative2ascii.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gorbd.1*
+%__rm -f %{buildroot}%{_mandir}/man1/grmid.1*
+%__rm -f %{buildroot}%{_mandir}/man1/grmiregistry.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gserialver.1*
+%__rm -f %{buildroot}%{_mandir}/man1/gtnameserv.1*
 
 %clean
 %__rm -rf %{buildroot}
