@@ -173,7 +173,7 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %__rm -f %{buildroot}%{_bindir}/grmiregistry
 %__rm -f %{buildroot}%{_bindir}/gserialver
 %__rm -f %{buildroot}%{_bindir}/gtnameserv
-%__rm -f %{buildroot}%{_datadir}/%{name}/examples
+%__rm -rf %{buildroot}%{_datadir}/%{name}/examples
 %__rm -f %{buildroot}%{_mandir}/man1/gappletviewer.1*
 %__rm -f %{buildroot}%{_mandir}/man1/gcjh.1*
 %__rm -f %{buildroot}%{_mandir}/man1/gjar.1*
