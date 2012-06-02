@@ -224,7 +224,6 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %defattr(0644,root,root,0755)
 %doc ChangeLog*
 %{_includedir}/*.h
-%{_datadir}/%{name}/examples
 
 %if %with gjdoc
 %files javadoc
