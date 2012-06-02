@@ -15,33 +15,33 @@ Group:		Development/Java
 License:	GPL-like
 URL:		http://www.classpath.org/
 Source0:	http://builder.classpath.org/dist/classpath-%{version}.tar.gz
-BuildRequires:	atk-devel
+BuildRequires:	pkgconfig(alsa)
+BuildRequires:	pkgconfig(atk)
+BuildRequires:	pkgconfig(cairo)
+BuildRequires:	pkgconfig(dssi)
+BuildRequires:	pkgconfig(freetype2)
+BuildRequires:	pkgconfig(gconf-2.0)
+BuildRequires:	pkgconfig(gdk-pixbuf-2.0)
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(jack)
+BuildRequires:	pkgconfig(pango)
+BuildRequires:	pkgconfig(xtst)
+BuildRequires:	magic-devel
 BuildRequires:	autoconf2.5
 BuildRequires:	automake1.8
-BuildRequires:	cairo-devel
-BuildRequires:	dssi-devel
+BuildRequires:	gcc-java
+BuildRequires:	gcj-tools
+BuildRequires:	java-rpmbuild
 %if %with ecj
 BuildRequires:	eclipse-ecj
 %endif
-BuildRequires:	freetype2-devel
-BuildRequires:	gcc-java
-BuildRequires:	gcj-tools
 %if %with gjdoc
 # Need to use gjdoc because of the -licensetext option
 BuildRequires:	gjdoc
 %else
 Obsoletes:	classpath-javadoc
 %endif
-BuildRequires:	java-rpmbuild
-BuildRequires:	libalsa-devel
-BuildRequires:	libGConf2-devel
-BuildRequires:	libgdk_pixbuf2.0-devel
-BuildRequires:	libgtk+2.0-devel
-BuildRequires:	libglib2.0-devel
-BuildRequires:	libjack-devel
-BuildRequires:	libpango-devel
-BuildRequires:	libxtst-devel
-BuildRequires:	magic-devel
 %if %with plugin
 BuildRequires:	mozilla-firefox-devel
 %endif
