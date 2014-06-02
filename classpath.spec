@@ -7,8 +7,8 @@
 %define libname %mklibname %{name}
 
 Name:		classpath
-Version:	0.97.2
-Release:	7
+Version:	0.99
+Release:	1
 Epoch:		0
 Summary:	GNU Classpath, Essential Libraries for Java
 Group:		Development/Java
