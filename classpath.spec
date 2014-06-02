@@ -1,3 +1,5 @@
+%define __libtoolize /bin/true
+
 %bcond_with ecj
 %bcond_without qt
 %bcond_with gjdoc
