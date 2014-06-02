@@ -112,7 +112,7 @@ your important data.
 %if %with qt
 export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
-%configure2_5x --disable-Werror \
+%configure --disable-Werror \
 %if %with plugin
                --enable-plugin \
 %else
@@ -137,7 +137,7 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
                --without-gjdoc
 %endif
 
-%__make
+%make
 
 %install
 %makeinstall_std
