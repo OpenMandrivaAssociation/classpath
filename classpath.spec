@@ -1,5 +1,3 @@
-%define __libtoolize /bin/true
-
 %bcond_with ecj
 %bcond_without qt
 %bcond_with gjdoc
@@ -114,29 +112,31 @@ your important data.
 %if %with qt
 export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
-%configure --disable-Werror \
+
+%configure \
+		--disable-Werror \
 %if %with plugin
-               --enable-plugin \
+		--enable-plugin \
 %else
-               --disable-plugin \
+		--disable-plugin \
 %endif
 %if %with qt
-               --enable-qt-peer \
+		--enable-qt-peer \
 %else
-               --disable-qt-peer \
+		--disable-qt-peer \
 %endif
-               --enable-regen-headers \
-               --disable-rpath \
-               --with-vm=%{java} \
+		--enable-regen-headers \
+		--disable-rpath \
+		--with-vm=%{java} \
 %if %with ecj
-               --with-ecj \
+		--with-ecj \
 %else
-               --without-ecj \
+		--without-ecj \
 %endif
 %if %with gjdoc
-               --with-gjdoc
+		--with-gjdoc
 %else
-               --without-gjdoc
+		--without-gjdoc
 %endif
 
 %make
