@@ -30,6 +30,7 @@ BuildRequires:	pkgconfig(xtst)
 BuildRequires:	magic-devel
 BuildRequires:	autoconf2.5
 BuildRequires:	automake1.8
+BuildRequires:	gettext
 BuildRequires:	gcc-java
 BuildRequires:	gcj-tools
 BuildRequires:	java-rpmbuild
