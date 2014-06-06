@@ -28,9 +28,6 @@ BuildRequires:	pkgconfig(jack)
 BuildRequires:	pkgconfig(pango)
 BuildRequires:	pkgconfig(xtst)
 BuildRequires:	magic-devel
-BuildRequires:	autoconf2.5
-BuildRequires:	automake1.8
-BuildRequires:	gettext
 BuildRequires:	gcc-java
 BuildRequires:	gcj-tools
 BuildRequires:	java-rpmbuild
@@ -110,12 +107,11 @@ your important data.
 %__perl -pi -e 's|^tools_cp=.*|tools_cp="%{_datadir}/%{name}/glibj.zip:%{_datadir}/%{name}/tools.zip"|' tools/g*.in
 
 %build
-autoreconf -fiv
 %if %with qt
 export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
 
-./configure \
+%configure \
 		--disable-Werror \
 %if %with plugin
 		--enable-plugin \
