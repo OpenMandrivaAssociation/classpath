@@ -111,7 +111,7 @@ your important data.
 export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
 
-%configure \
+./configure \
 		--disable-Werror \
 %if %with plugin
 		--enable-plugin \
