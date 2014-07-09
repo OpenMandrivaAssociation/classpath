@@ -31,6 +31,7 @@ BuildRequires:	magic-devel
 BuildRequires:	gcc-java
 BuildRequires:	gcj-tools
 BuildRequires:	java-rpmbuild
+BuildRequires:	gettext-devel
 %if %with ecj
 BuildRequires:	eclipse-ecj
 %endif
