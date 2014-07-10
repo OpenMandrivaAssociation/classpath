@@ -111,7 +111,7 @@ perl -pi -e 's|^tools_cp=.*|tools_cp="%{_datadir}/%{name}/glibj.zip:%{_datadir}/
 export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
 
-%configure \
+%configure2_5x \
 		--disable-Werror \
 %if %with plugin
 		--enable-plugin \
