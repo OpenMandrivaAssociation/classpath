@@ -31,7 +31,6 @@ BuildRequires:	magic-devel
 BuildRequires:	gcc-java
 BuildRequires:	gcj-tools
 BuildRequires:	java-rpmbuild
-BuildRequires:	gettext-devel
 %if %with ecj
 BuildRequires:	eclipse-ecj
 %endif
@@ -108,7 +107,6 @@ your important data.
 perl -pi -e 's|^tools_cp=.*|tools_cp="%{_datadir}/%{name}/glibj.zip:%{_datadir}/%{name}/tools.zip"|' tools/g*.in
 
 %build
-autoreconf -fiv
 %if %with qt
 export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
