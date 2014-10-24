@@ -5,6 +5,7 @@
 
 %define javaver 1.5.0
 %define libname %mklibname %{name}
+%define _disable_ld_no_undefined 1
 
 Name:		classpath
 Version:	0.99
