@@ -5,6 +5,7 @@
 
 %define javaver 1.5.0
 %define libname %mklibname %{name}
+%define _disable_ld_no_undefined 1
 
 Name:		classpath
 Version:	0.99
@@ -33,19 +34,19 @@ BuildRequires:	gcj-tools
 BuildRequires:	java-rpmbuild
 BuildRequires:	java-devel
 BuildRequires:	antlr
-%if %with ecj
+%if %{with ecj}
 BuildRequires:	eclipse-ecj
 %endif
-%if %with gjdoc
+%if %{with gjdoc}
 # Need to use gjdoc because of the -licensetext option
 BuildRequires:	gjdoc
 %else
 Obsoletes:		classpath-javadoc
 %endif
-%if %with plugin
+%if %{with plugin}
 BuildRequires:	mozilla-firefox-devel
 %endif
-%if %with qt
+%if %{with qt}
 BuildRequires:	qt4-devel >= 0:4.1.0
 %endif
 
@@ -108,24 +109,19 @@ your important data.
 %setup -q
 perl -pi -e 's|^tools_cp=.*|tools_cp="%{_datadir}/%{name}/glibj.zip:%{_datadir}/%{name}/tools.zip"|' tools/g*.in
 
-# freetype2 fix Sflo
-perl -pi -e "s|<freetype/|<freetype2/|" native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
-perl -pi -e "s|<freetype/|<freetype2/|" native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
-#
-
 %build
-%if %with qt
+%if %{with qt}
 export MOC=%{_prefix}/lib/qt4/bin/moc
 %endif
 
-%configure \
+%configure2_5x \
 		--disable-Werror \
-%if %with plugin
+%if %{with plugin}
 		--enable-plugin \
 %else
 		--disable-plugin \
 %endif
-%if %with qt
+%if %{with qt}
 		--enable-qt-peer \
 %else
 		--disable-qt-peer \
@@ -133,15 +129,15 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
 		--enable-regen-headers \
 		--disable-rpath \
 		--with-vm=%{java} \
-%if %with ecj
+%if %{with ecj}
 		--with-ecj \
 %else
 		--without-ecj \
 %endif
-%if %with gjdoc
-		--with-gjdoc
+%if %{with gjdoc}
+		--enable-gjdoc \
 %else
-		--without-gjdoc
+		--disable-gjdoc
 %endif
 
 %make
@@ -160,10 +156,13 @@ export MOC=%{_prefix}/lib/qt4/bin/moc
 %__rm %{buildroot}%{_prefix}/lib/logging.properties
 %__rm %{buildroot}%{_prefix}/lib/security/classpath.security
 
-%if %with gjdoc
+%if %{with gjdoc}
 %__mkdir_p 755 %{buildroot}%{_javadocdir}
 cp -a doc/api/html %{buildroot}%{_javadocdir}/%{name}-%{version}
 touch %{buildroot}%{_javadocdir}/{%{name},java}
+%else
+rm -rf %{buildroot}%{_bindir}/gjdoc
+rm -rf %{buildroot}%{_mandir}/man1/gjdoc.1*
 %endif
 
 # FIXME: conflicts with gcj-tools
@@ -194,7 +193,7 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %__rm -f %{buildroot}%{_mandir}/man1/gtnameserv.1*
 
 
-%if %with gjdoc
+%if %{with gjdoc}
 %post javadoc
 %__rm -rf %{_javadocdir}/java
 %__rm -f %{_javadocdir}/%{name}
@@ -213,7 +212,7 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %defattr(-,root,root)
 %{_libdir}/%{name}/libgconfpeer.*
 %{_libdir}/%{name}/libgjsmalsa.*
-%if %with gjdoc
+%if %{with gjdoc}
 %{_libdir}/%{name}/libgjsmdssi.*
 %endif
 %{_libdir}/%{name}/libgtkpeer.*
@@ -231,7 +230,7 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %doc ChangeLog*
 %{_includedir}/*.h
 
-%if %with gjdoc
+%if %{with gjdoc}
 %files javadoc
 %defattr(0644,root,root,0755)
 %doc %{_javadocdir}/%{name}-%{version}
@@ -239,12 +238,12 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %ghost %doc %{_javadocdir}/java
 %endif
 
-%if %with qt
+%if %{with qt}
 %files qt
 %{_libdir}/%{name}/libqtpeer.*
 %endif
 
-%if %with plugin
+%if %{with plugin}
 %files -n mozilla-plugin-gcjwebplugin
 %{_libdir}/classpath/libgcjwebplugin.so
 %endif
