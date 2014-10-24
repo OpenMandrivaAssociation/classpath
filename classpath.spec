@@ -32,6 +32,7 @@ BuildRequires:	gcc-java
 BuildRequires:	gcj-tools
 BuildRequires:	java-rpmbuild
 BuildRequires:	java-devel
+BuildRequires:	antlr
 %if %with ecj
 BuildRequires:	eclipse-ecj
 %endif
@@ -106,6 +107,11 @@ your important data.
 %prep
 %setup -q
 perl -pi -e 's|^tools_cp=.*|tools_cp="%{_datadir}/%{name}/glibj.zip:%{_datadir}/%{name}/tools.zip"|' tools/g*.in
+
+# freetype2 fix Sflo
+perl -pi -e "s|<freetype/|<freetype2/|" native/jni/gtk-peer/gnu_java_awt_peer_gtk_FreetypeGlyphVector.c
+perl -pi -e "s|<freetype/|<freetype2/|" native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c
+#
 
 %build
 %if %with qt
