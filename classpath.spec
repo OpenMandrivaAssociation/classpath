@@ -16,6 +16,7 @@ Group:		Development/Java
 License:	GPL-like
 URL:		http://www.classpath.org/
 Source0:	http://builder.classpath.org/dist/classpath-%{version}.tar.gz
+Source1:	classpath.rpmlintrc
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(atk)
 BuildRequires:	pkgconfig(cairo)
