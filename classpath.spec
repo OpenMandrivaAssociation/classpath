@@ -213,7 +213,9 @@ touch %{buildroot}%{_javadocdir}/{%{name},java}
 %defattr(-,root,root)
 %{_libdir}/%{name}/libgconfpeer.*
 %{_libdir}/%{name}/libgjsmalsa.*
+%if %with gjdoc
 %{_libdir}/%{name}/libgjsmdssi.*
+%endif
 %{_libdir}/%{name}/libgtkpeer.*
 %{_libdir}/%{name}/libjavaio.*
 %{_libdir}/%{name}/libjavalang.*
