@@ -9,7 +9,7 @@
 
 Name:		classpath
 Version:	0.99
-Release:	1
+Release:	2
 Epoch:		0
 Summary:	GNU Classpath, Essential Libraries for Java
 Group:		Development/Java
