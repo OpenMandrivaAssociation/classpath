@@ -1,60 +1,34 @@
-%bcond_with ecj
-%bcond_without qt
-%bcond_with gjdoc
-%bcond_with plugin
-
 %define javaver 1.5.0
-%define libname %mklibname %{name}
-%define _disable_ld_no_undefined 1
 
 Name:		classpath
-Version:	0.99
-Release:	2
-Epoch:		0
-Summary:	GNU Classpath, Essential Libraries for Java
+Version:	0.93
+Release:	1
+Summary:	An old implementation of the Java standard class library
 Group:		Development/Java
 License:	GPL-like
 URL:		http://www.classpath.org/
-Source0:	http://builder.classpath.org/dist/classpath-%{version}.tar.gz
+Source0:	ftp://ftp.gnu.org/gnu/classpath/classpath-%{version}.tar.gz
 Source1:	classpath.rpmlintrc
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(atk)
 BuildRequires:	pkgconfig(cairo)
-BuildRequires:	pkgconfig(dssi)
+#BuildRequires:	pkgconfig(dssi)
 BuildRequires:	pkgconfig(freetype2)
-BuildRequires:	pkgconfig(gconf-2.0)
-BuildRequires:	pkgconfig(gdk-pixbuf-2.0)
-BuildRequires:	pkgconfig(glib-2.0)
-BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(jack)
 BuildRequires:	pkgconfig(pango)
 BuildRequires:	pkgconfig(xtst)
 BuildRequires:	magic-devel
-BuildRequires:	gcc-java
-BuildRequires:	gcj-tools
-BuildRequires:	java-rpmbuild
-BuildRequires:	java-devel
-BuildRequires:	antlr
-%if %{with ecj}
-BuildRequires:	eclipse-ecj
-%endif
-%if %{with gjdoc}
-# Need to use gjdoc because of the -licensetext option
-BuildRequires:	gjdoc
-%else
-Obsoletes:		classpath-javadoc
-%endif
-%if %{with plugin}
-BuildRequires:	mozilla-firefox-devel
-%endif
-%if %{with qt}
-BuildRequires:	qt4-devel >= 0:4.1.0
-%endif
+BuildRequires:	jikes
+BuildRequires:	jamvm
+BuildRequires:	fastjar
 
 %description
-GNU Classpath, Essential Libraries for Java, is a GNU project to
-create free core class libraries for use with virtual machines and
-compilers for the java programming language.
+GNU Classpath was a project to create a free reimplementation of the Java
+standard class library before OpenJDK was released under an acceptable
+license.
+
+These days, it is obsoleted by OpenJDK - but it is still useful for
+bootstrapping OpenJDK (which usually requires itself to build).
 
 %package devel
 Summary:	Devlopment headers and examples for GNU Classpath
@@ -64,188 +38,58 @@ Requires:	classpath = %{EVRD}
 %description devel
 %{summary}.
 
-%if %with gjdoc
-%package javadoc
-Summary:	API documentation for GNU Classpath
-Group:		Development/Java
-Provides:	java-javadoc = 0:%{javaver}
-Provides:	java-%{javaver}-javadoc = 0:%{javaver}
-
-%description javadoc
-%{summary}.
-%endif
-
-%if %with qt
-%package qt
-Summary:	QT4 peer for GNU Classpath
-Group:		Development/Java
-
-%description qt
-%{summary}.
-%endif
-
-%if %with plugin
-%package -n mozilla-plugin-gcjwebplugin
-Summary:	Plugin to execute Java (tm) applets in Mozilla and compatible browsers
-Group:		Development/Java
-Requires:	mozilla-firefox
-Provides:	mozilla-plugin-gcj = %{EVRD}
-Provides:	gcjwebplugin = %{EVRD}
-Provides:	java-plugin = %{epoch}:%{javaver}
-Provides:	java-%{javaver}-plugin = %{EVRD}
-Requires:	classpath = %{EVRD}
-
-%description -n mozilla-plugin-gcjwebplugin
-gcjwebplugin is a plugin to execute Java (tm) applets in Mozilla and
-compatible browsers. It uses the JVM provided by GCJ and adds a
-SecurityManager suitable for applets.
-
-WARNING: The current version does not provide a security manager capable
-of handling Java (tm) applets. Applets have UNRESTRICTED access to your
-computer. This means they can do anything you can do, like deleting all
-your important data.
-%endif
-
 %prep
-%setup -q
-perl -pi -e 's|^tools_cp=.*|tools_cp="%{_datadir}/%{name}/glibj.zip:%{_datadir}/%{name}/tools.zip"|' tools/g*.in
+%autosetup -p1
+%configure \
+	--with-jikes=%{_bindir}/jikes \
+	--with-fastjar=%{_bindir}/fastjar \
+	--with-vm=%{_bindir}/jamvm \
+	--disable-Werror \
+	--disable-gtk-peer \
+	--disable-gconf-peer \
+	--enable-default-preferences-peer=file \
+	--disable-plugin
 
 %build
-%if %{with qt}
-export MOC=%{_prefix}/lib/qt4/bin/moc
-%endif
-
-%configure2_5x \
-		--disable-Werror \
-%if %{with plugin}
-		--enable-plugin \
-%else
-		--disable-plugin \
-%endif
-%if %{with qt}
-		--enable-qt-peer \
-%else
-		--disable-qt-peer \
-%endif
-		--enable-regen-headers \
-		--disable-rpath \
-		--with-vm=%{java} \
-%if %{with ecj}
-		--with-ecj \
-%else
-		--without-ecj \
-%endif
-%if %{with gjdoc}
-		--enable-gjdoc \
-%else
-		--disable-gjdoc
-%endif
-
-%make
+# Not SMP safe
+make
 
 %install
-%makeinstall_std
-%if %with plugin
-(cd native/plugin && %{makeinstall_std})
-%__rm %{buildroot}%{_libdir}/%{name}/libgcjwebplugin.la
-%endif
-%if 0
-%__mkdir_p %{buildroot}%{_libdir}/mozilla/plugins
-%__mv %{buildroot}%{_libdir}/%{name}/libgcjwebplugin.so %{buildroot}%{_libdir}/mozilla/plugins
-%endif
-# FIXME: Shared with libgcj
-%__rm %{buildroot}%{_prefix}/lib/logging.properties
-%__rm %{buildroot}%{_prefix}/lib/security/classpath.security
-
-%if %{with gjdoc}
-%__mkdir_p 755 %{buildroot}%{_javadocdir}
-cp -a doc/api/html %{buildroot}%{_javadocdir}/%{name}-%{version}
-touch %{buildroot}%{_javadocdir}/{%{name},java}
-%else
-rm -rf %{buildroot}%{_bindir}/gjdoc
-rm -rf %{buildroot}%{_mandir}/man1/gjdoc.1*
-%endif
-
-# FIXME: conflicts with gcj-tools
-%__rm -f %{buildroot}%{_bindir}/gappletviewer
-%__rm -f %{buildroot}%{_bindir}/gjar
-%__rm -f %{buildroot}%{_bindir}/gjarsigner
-%__rm -f %{buildroot}%{_bindir}/gjavah
-%__rm -f %{buildroot}%{_bindir}/gkeytool
-%__rm -f %{buildroot}%{_bindir}/gnative2ascii
-%__rm -f %{buildroot}%{_bindir}/gorbd
-%__rm -f %{buildroot}%{_bindir}/grmic
-%__rm -f %{buildroot}%{_bindir}/grmid
-%__rm -f %{buildroot}%{_bindir}/grmiregistry
-%__rm -f %{buildroot}%{_bindir}/gserialver
-%__rm -f %{buildroot}%{_bindir}/gtnameserv
-%__rm -rf %{buildroot}%{_datadir}/%{name}/examples
-%__rm -f %{buildroot}%{_mandir}/man1/gappletviewer.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gcjh.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gjar.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gjarsigner.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gjavah.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gkeytool.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gnative2ascii.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gorbd.1*
-%__rm -f %{buildroot}%{_mandir}/man1/grmid.1*
-%__rm -f %{buildroot}%{_mandir}/man1/grmiregistry.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gserialver.1*
-%__rm -f %{buildroot}%{_mandir}/man1/gtnameserv.1*
-
-
-%if %{with gjdoc}
-%post javadoc
-%__rm -rf %{_javadocdir}/java
-%__rm -f %{_javadocdir}/%{name}
-%__ln_s %{name}-%{version} %{_javadocdir}/%{name}
-%__ln_s %{name}-%{version} %{_javadocdir}/java
-%endif
+%make_install
 
 %files
 %defattr(0644,root,root,0755)
 %doc AUTHORS BUGS COPYING HACKING INSTALL LICENSE NEWS README THANKYOU TODO
+%{_bindir}/gappletviewer
+%{_bindir}/gjar
+%{_bindir}/gjarsigner
+%{_bindir}/gkeytool
+%{_bindir}/gnative2ascii
+%{_bindir}/gorbd
+%{_bindir}/grmid
+%{_bindir}/grmiregistry
+%{_bindir}/gserialver
+%{_bindir}/gtnameserv
+%{_prefix}/lib/logging.properties
+%{_prefix}/lib/security/classpath.security
+%{_infodir}/hacking.info*
+%{_infodir}/tools.info*
+%{_infodir}/vmintegration.info*
 %{_datadir}/%{name}
-%{_infodir}/cp-hacking.info*
-%{_infodir}/cp-tools.info*
-%{_infodir}/cp-vmintegration.info*
 %dir %{_libdir}/%{name}
 %defattr(-,root,root)
-%{_libdir}/%{name}/libgconfpeer.*
 %{_libdir}/%{name}/libgjsmalsa.*
 %if %{with gjdoc}
 %{_libdir}/%{name}/libgjsmdssi.*
 %endif
-%{_libdir}/%{name}/libgtkpeer.*
 %{_libdir}/%{name}/libjavaio.*
 %{_libdir}/%{name}/libjavalang.*
-%{_libdir}/%{name}/libjavalangmanagement.*
 %{_libdir}/%{name}/libjavalangreflect.*
 %{_libdir}/%{name}/libjavanet.*
 %{_libdir}/%{name}/libjavanio.*
 %{_libdir}/%{name}/libjavautil.*
-%{_libdir}/%{name}/libjawt.*
 
 %files devel
 %defattr(0644,root,root,0755)
 %doc ChangeLog*
 %{_includedir}/*.h
-
-%if %{with gjdoc}
-%files javadoc
-%defattr(0644,root,root,0755)
-%doc %{_javadocdir}/%{name}-%{version}
-%ghost %doc %{_javadocdir}/%{name}
-%ghost %doc %{_javadocdir}/java
-%endif
-
-%if %{with qt}
-%files qt
-%{_libdir}/%{name}/libqtpeer.*
-%endif
-
-%if %{with plugin}
-%files -n mozilla-plugin-gcjwebplugin
-%{_libdir}/classpath/libgcjwebplugin.so
-%endif
-
