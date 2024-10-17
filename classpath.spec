@@ -6,7 +6,7 @@ Release:	1
 Summary:	An old implementation of the Java standard class library
 Group:		Development/Java
 License:	GPL-like
-URL:		http://www.classpath.org/
+URL:		https://www.classpath.org/
 Source0:	ftp://ftp.gnu.org/gnu/classpath/classpath-%{version}.tar.gz
 Source1:	classpath.rpmlintrc
 BuildRequires:	pkgconfig(alsa)
